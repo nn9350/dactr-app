@@ -706,8 +706,16 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return await response.json();
+                    
+                    const responseData = await response.json();
+                    
+                    if (!response.ok) {
+                        const errorMsg = responseData.error || responseData.message || 'Network response was not ok';
+                        console.error('❌ Backend Error:', errorMsg, 'Data sent:', data);
+                        throw new Error(errorMsg);
+                    }
+                    
+                    return responseData;
                 } catch (error) {
                     console.error('API POST Error:', error);
                     throw error;
