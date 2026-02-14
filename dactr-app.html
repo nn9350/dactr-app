@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <title>Dactr — Dental Care for All 🦷</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .lang-toggle:hover {
+            background: white;
+            color: #1e293b;
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: #f8fafc;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #334155;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 400px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #1e293b;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #334155;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 12px 0;
+            line-height: 1.7;
+            color: #475569;
+            font-size: 1.05rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #0ea5e9;
+        }
+
+        .quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #667eea;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            color: white;
+            opacity: 0.9;
+        }
+
+        /* Functional Features */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .cost-result {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .cost-result h3 {
+            color: #15803d;
+            margin-top: 0;
+        }
+
+        .emergency-card {
+            background: #fee2e2;
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .emergency-card h4 {
+            color: #991b1b;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 2px solid #34d399;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .lang-toggle {
+                position: static;
+                display: block;
+                margin: 10px auto 0;
+                width: fit-content;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="lang-toggle" onclick="toggleLanguage()">
+                <span id="lang-btn-text">हिंदी में देखें</span>
+            </button>
+            <h1 id="header-title">🦷 Dactr</h1>
+            <p id="header-subtitle">Making Dental Care Accessible for Everyone in India</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showPage('home')">
+                <span class="en">Home</span>
+                <span class="hi hidden">होम</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('booking')">
+                <span class="en">Book Appointment</span>
+                <span class="hi hidden">अपॉइंटमेंट बुक करें</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('cost')">
+                <span class="en">Cost Calculator</span>
+                <span class="hi hidden">लागत कैलकुलेटर</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('emergency')">
+                <span class="en">Emergency Tips</span>
+                <span class="hi hidden">आपातकालीन सुझाव</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('about')">
+                <span class="en">About</span>
+                <span class="hi hidden">हमारे बारे में</span>
+            </button>
+        </div>
+
+        <div class="content">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <div class="en">
+                    <h2>Dactr — Explained Simply</h2>
+                    
+                    <h3>Imagine This...</h3>
+                    <p>You live in a small town in India. Your tooth hurts really badly. But the nearest good dentist is far away, you're not sure how much it'll cost, and honestly — you're a little scared. So you just... don't go.</p>
+                    
+                    <p>That's the reality for <span class="highlight">hundreds of millions of Indians.</span></p>
+                    
+                    <p>Now think about the dentist in that same small town. He's running his clinic with <span class="highlight">paper files, handwritten bills, and no way to remind patients about their appointments.</span> He's losing track of everything and has no idea which part of his clinic is actually doing well.</p>
+                    
+                    <p><strong>Dactr is trying to fix both these problems at the same time.</strong></p>
+
+                    <div class="stats">
+                        <div class="stat-card">
+                            <h4>9/10</h4>
+                            <p>People in rural India have dental problems</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>4/10</h4>
+                            <p>Actually visit a dentist</p>
+                        </div>
+                    </div>
+
+                    <h3>So What Exactly Is Dactr?</h3>
+                    <p>You know how big restaurants use software to take orders, manage staff, and send you a receipt? <strong>Dactr does the same thing — but for dental clinics in small towns.</strong></p>
+                    
+                    <p>It's a <span class="highlight">software product</span> — part website, part mobile app — that helps dentists run their clinics smoothly, and helps patients like you and me actually take care of our teeth.</p>
+                    
+                    <p class="quote">"Making dental care easier, less scary, and available to everyone, not just people in big cities."</p>
+                </div>
+
+                <div class="hi hidden">
+                    <h2>Dactr — आसान भाषा में</h2>
+                    
+                    <h3>सोचिए...</h3>
+                    <p>आप भारत के एक छोटे शहर में रहते हैं। आपके दांत में बहुत दर्द है। लेकिन नजदीकी अच्छा डेंटिस्ट दूर है, आप नहीं जानते कि कितना खर्च होगा, और सच कहूं तो — आप थोड़ा डरे हुए हैं। तो आप जाते ही नहीं।</p>
+                    
+                    <p>यह <span class="highlight">करोड़ों भारतीयों</span> की सच्चाई है।</p>
+                    
+                    <p>अब उसी शहर के डेंटिस्ट के बारे में सोचिए। वह अपनी क्लिनिक <span class="highlight">कागज की फाइलों, हाथ से लिखे बिलों के साथ चला रहा है और मरीजों को अपॉइंटमेंट की याद दिलाने का कोई तरीका नहीं है।</span> वह सब कुछ भूल जा रहा है और उसे नहीं पता कि उसकी क्लिनिक का कौन सा हिस्सा अच्छा चल रहा है।</p>
+                    
+                    <p><strong>Dactr इन दोनों समस्याओं को एक साथ हल करने की कोशिश कर रहा है।</strong></p>
+
+                    <div class="stats">
+                        <div class="stat-card">
+                            <h4>10 में से 9</h4>
+                            <p>ग्रामीण भारत में लोगों को दांतों की समस्या है</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>10 में से 4</h4>
+                            <p>वास्तव में डेंटिस्ट के पास जाते हैं</p>
+                        </div>
+                    </div>
+
+                    <h3>तो Dactr क्या है?</h3>
+                    <p>आप जानते हैं कि बड़े रेस्टोरेंट कैसे ऑर्डर लेने, स्टाफ मैनेज करने और रसीद भेजने के लिए सॉफ्टवेयर का उपयोग करते हैं? <strong>Dactr भी वही करता है — लेकिन छोटे शहरों के डेंटल क्लिनिक के लिए।</strong></p>
+                    
+                    <p>यह एक <span class="highlight">सॉफ्टवेयर प्रोडक्ट</span> है — आधा वेबसाइट, आधा मोबाइल ऐप — जो डेंटिस्ट को अपनी क्लिनिक सुचारू रूप से चलाने में मदद करता है, और हम जैसे मरीजों को अपने दांतों की देखभाल करने में मदद करता है।</p>
+                    
+                    <p class="quote">"दांतों की देखभाल को आसान, कम डरावना और सभी के लिए उपलब्ध बनाना, न कि केवल बड़े शहरों के लोगों के लिए।"</p>
+                </div>
+            </div>
+
+            <!-- Booking Page -->
+            <div id="booking" class="page">
+                <div class="en">
+                    <h2>📅 Book Your Appointment</h2>
+                    <p>Fill in the details below to book your dental appointment. We'll confirm your booking shortly!</p>
+                </div>
+                <div class="hi hidden">
+                    <h2>📅 अपनी अपॉइंटमेंट बुक करें</h2>
+                    <p>अपनी डेंटल अपॉइंटमेंट बुक करने के लिए नीचे विवरण भरें। हम जल्द ही आपकी बुकिंग की पुष्टि करेंगे!</p>
+                </div>
+
+                <form id="bookingForm" onsubmit="submitBooking(event)">
+                    <div class="form-group">
+                        <label class="en">Your Name</label>
+                        <label class="hi hidden">आपका नाम</label>
+                        <input type="text" id="name" required placeholder="Enter your name / अपना नाम दर्ज करें">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="en">Phone Number</label>
+                        <label class="hi hidden">फोन नंबर</label>
+                        <input type="tel" id="phone" required placeholder="10-digit mobile number / 10 अंकों का मोबाइल नंबर">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="en">Preferred Date</label>
+                        <label class="hi hidden">पसंदीदा तारीख</label>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="en">Preferred Time</label>
+                        <label class="hi hidden">पसंदीदा समय</label>
+                        <select id="time" required>
+                            <option value="">Select time / समय चुनें</option>
+                            <option value="morning">Morning (9 AM - 12 PM) / सुबह</option>
+                            <option value="afternoon">Afternoon (2 PM - 5 PM) / दोपहर</option>
+                            <option value="evening">Evening (5 PM - 8 PM) / शाम</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="en">Problem Description</label>
+                        <label class="hi hidden">समस्या का विवरण</label>
+                        <textarea id="problem" rows="4" placeholder="Describe your dental problem / अपनी दांतों की समस्या बताएं"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <span class="en">Book Appointment</span>
+                        <span class="hi hidden">अपॉइंटमेंट बुक करें</span>
+                    </button>
+
+                    <div id="bookingSuccess" class="success-message">
+                        <span class="en">✅ Appointment booked successfully! We'll contact you soon.</span>
+                        <span class="hi hidden">✅ अपॉइंटमेंट सफलतापूर्वक बुक हो गई! हम जल्द ही आपसे संपर्क करेंगे।</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Cost Calculator Page -->
+            <div id="cost" class="page">
+                <div class="en">
+                    <h2>💰 Treatment Cost Calculator</h2>
+                    <p>Get an estimated cost for common dental treatments. Actual costs may vary based on your specific condition.</p>
+                </div>
+                <div class="hi hidden">
+                    <h2>💰 उपचार लागत कैलकुलेटर</h2>
+                    <p>सामान्य डेंटल उपचार के लिए अनुमानित लागत प्राप्त करें। वास्तविक लागत आपकी विशिष्ट स्थिति के आधार पर भिन्न हो सकती है।</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="en">Select Treatment</label>
+                    <label class="hi hidden">उपचार चुनें</label>
+                    <select id="treatment" onchange="calculateCost()">
+                        <option value="">Choose treatment / उपचार चुनें</option>
+                        <option value="500">Basic Checkup / सामान्य जांच - ₹500</option>
+                        <option value="800">Teeth Cleaning / दांत की सफाई - ₹800</option>
+                        <option value="1500">Tooth Filling / दांत भरना - ₹1,500</option>
+                        <option value="3000">Root Canal / रूट कैनाल - ₹3,000</option>
+                        <option value="5000">Tooth Extraction / दांत निकालना - ₹5,000</option>
+                        <option value="15000">Dental Crown / डेंटल क्राउन - ₹15,000</option>
+                        <option value="25000">Dental Implant / डेंटल इम्प्लांट - ₹25,000</option>
+                    </select>
+                </div>
+
+                <div id="costResult" class="cost-result" style="display:none;">
+                    <h3 class="en">Estimated Cost</h3>
+                    <h3 class="hi hidden">अनुमानित लागत</h3>
+                    <p style="font-size: 2.5rem; font-weight: bold; color: #15803d; margin: 15px 0;">₹<span id="costAmount">0</span></p>
+                    <p class="en" style="color: #065f46; font-size: 0.95rem;">This is an approximate cost. Final amount may vary after consultation.</p>
+                    <p class="hi hidden" style="color: #065f46; font-size: 0.95rem;">यह एक अनुमानित लागत है। परामर्श के बाद अंतिम राशि भिन्न हो सकती है।</p>
+                </div>
+            </div>
+
+            <!-- Emergency Tips Page -->
+            <div id="emergency" class="page">
+                <div class="en">
+                    <h2>🚨 Dental Emergency Tips</h2>
+                    <p>Quick first aid tips for common dental emergencies. Remember: These are temporary solutions. Visit a dentist as soon as possible!</p>
+                </div>
+                <div class="hi hidden">
+                    <h2>🚨 दांतों की आपातकालीन सुझाव</h2>
+                    <p>सामान्य दांतों की आपात स्थितियों के लिए त्वरित प्राथमिक उपचार सुझाव। याद रखें: ये अस्थायी समाधान हैं। जितनी जल्दी हो सके डेंटिस्ट के पास जाएं!</p>
+                </div>
+
+                <div class="emergency-card">
+                    <h4 class="en">🦷 Severe Toothache</h4>
+                    <h4 class="hi hidden">🦷 तेज दांत दर्द</h4>
+                    <ul class="en">
+                        <li>Rinse mouth with warm salt water</li>
+                        <li>Take over-the-counter pain reliever</li>
+                        <li>Apply cold compress outside the cheek</li>
+                        <li>Avoid hot/cold foods</li>
+                    </ul>
+                    <ul class="hi hidden">
+                        <li>गुनगुने नमक के पानी से मुंह कुल्ला करें</li>
+                        <li>दर्द निवारक दवा लें</li>
+                        <li>गाल के बाहर ठंडी पट्टी लगाएं</li>
+                        <li>गर्म/ठंडा खाना न खाएं</li>
+                    </ul>
+                </div>
+
+                <div class="emergency-card">
+                    <h4 class="en">💥 Broken/Chipped Tooth</h4>
+                    <h4 class="hi hidden">💥 टूटा/चिपटा दांत</h4>
+                    <ul class="en">
+                        <li>Save any broken pieces</li>
+                        <li>Rinse mouth with warm water</li>
+                        <li>Apply gauze to stop bleeding</li>
+                        <li>Use cold compress for swelling</li>
+                        <li>See dentist immediately</li>
+                    </ul>
+                    <ul class="hi hidden">
+                        <li>टूटे हुए टुकड़े रखें</li>
+                        <li>गुनगुने पानी से मुंह धोएं</li>
+                        <li>खून रोकने के लिए रुई लगाएं</li>
+                        <li>सूजन के लिए ठंडी पट्टी का उपयोग करें</li>
+                        <li>तुरंत डेंटिस्ट से मिलें</li>
+                    </ul>
+                </div>
+
+                <div class="emergency-card">
+                    <h4 class="en">🩸 Bleeding Gums</h4>
+                    <h4 class="hi hidden">🩸 मसूड़ों से खून आना</h4>
+                    <ul class="en">
+                        <li>Rinse with salt water</li>
+                        <li>Apply gentle pressure with gauze</li>
+                        <li>Use ice pack on outside of mouth</li>
+                        <li>Avoid aspirin (can increase bleeding)</li>
+                    </ul>
+                    <ul class="hi hidden">
+                        <li>नमक के पानी से कुल्ला करें</li>
+                        <li>रुई से धीरे से दबाव डालें</li>
+                        <li>मुंह के बाहर आइस पैक का उपयोग करें</li>
+                        <li>एस्पिरिन से बचें (खून बढ़ा सकता है)</li>
+                    </ul>
+                </div>
+
+                <div class="emergency-card">
+                    <h4 class="en">😷 Swelling or Abscess</h4>
+                    <h4 class="hi hidden">😷 सूजन या फोड़ा</h4>
+                    <ul class="en">
+                        <li>Rinse with salt water several times</li>
+                        <li>Do NOT try to drain it yourself</li>
+                        <li>Take pain medication if needed</li>
+                        <li>See dentist URGENTLY - this can be serious!</li>
+                    </ul>
+                    <ul class="hi hidden">
+                        <li>कई बार नमक के पानी से कुल्ला करें</li>
+                        <li>खुद से निकालने की कोशिश न करें</li>
+                        <li>जरूरत पड़ने पर दर्द की दवा लें</li>
+                        <li>तुरंत डेंटिस्ट से मिलें - यह गंभीर हो सकता है!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div id="about" class="page">
+                <div class="en">
+                    <h2>About Dactr</h2>
+                    
+                    <h3>Who Built It and Why?</h3>
+                    <p>A dentist named <strong>Dr. Nitin</strong>, who owns two dental clinics in Gwalior, Madhya Pradesh, built this. He's been a dentist for over 15 years and was frustrated that no good software existed for clinics like his.</p>
+                    
+                    <p>So instead of waiting for someone else to fix it — <span class="highlight">he decided to build it himself.</span></p>
+                    
+                    <div class="feature-box">
+                        <p><strong>That's actually a really big deal.</strong> He's not just some tech person guessing what dentists need. <span class="highlight">He IS the dentist. He knows the problem from the inside.</span></p>
+                        
+                        <p>It's like if a student who struggled with bad school canteen food decided to build an app to fix it — they'd know exactly what's wrong.</p>
+                    </div>
+
+                    <h3>The Bigger Picture 🌍</h3>
+                    <p>Dactr isn't just a cool tech product. It's trying to create real change:</p>
+                    
+                    <ul>
+                        <li>A dentist in a small town can now <strong>run a clinic as efficiently as one in Delhi</strong></li>
+                        <li>A patient in a village can <strong>book an appointment, understand the cost, and feel less scared</strong> before walking in</li>
+                        <li>Fewer people will need to travel to big cities just to get basic dental care</li>
+                        <li>More people will start taking care of their teeth <strong>before</strong> small problems become big, expensive ones</li>
+                    </ul>
+                    
+                    <p class="quote">It's using technology to bridge the gap between cities and small towns — one dental clinic at a time. 💪</p>
+
+                    <h3>What Makes Dactr Different?</h3>
+                    <ul>
+                        <li>✅ Affordable for small-town dentists</li>
+                        <li>✅ Works offline with slow internet</li>
+                        <li>✅ Available in Hindi and English</li>
+                        <li>✅ Designed specifically for dental clinics</li>
+                        <li>✅ Built by a dentist who understands the real problems</li>
+                    </ul>
+                </div>
+
+                <div class="hi hidden">
+                    <h2>Dactr के बारे में</h2>
+                    
+                    <h3>इसे किसने और क्यों बनाया?</h3>
+                    <p><strong>डॉ. नितिन</strong> नाम के एक डेंटिस्ट ने इसे बनाया, जो ग्वालियर, मध्य प्रदेश में दो डेंटल क्लिनिक चलाते हैं। वह 15 से अधिक वर्षों से डेंटिस्ट हैं और निराश थे कि उनके जैसी क्लिनिक के लिए कोई अच्छा सॉफ्टवेयर मौजूद नहीं था।</p>
+                    
+                    <p>तो किसी और के इसे ठीक करने का इंतजार करने के बजाय — <span class="highlight">उन्होंने खुद इसे बनाने का फैसला किया।</span></p>
+                    
+                    <div class="feature-box">
+                        <p><strong>यह वास्तव में बहुत बड़ी बात है।</strong> वह सिर्फ कोई टेक व्यक्ति नहीं हैं जो अनुमान लगा रहे हैं कि डेंटिस्ट को क्या चाहिए। <span class="highlight">वह खुद डेंटिस्ट हैं। वह समस्या को अंदर से जानते हैं।</span></p>
+                        
+                        <p>यह ऐसा है जैसे कोई छात्र जो स्कूल की खराब कैंटीन के खाने से परेशान था, उसे ठीक करने के लिए एक ऐप बनाने का फैसला करे — उन्हें पता होगा कि क्या गलत है।</p>
+                    </div>
+
+                    <h3>बड़ी तस्वीर 🌍</h3>
+                    <p>Dactr सिर्फ एक शानदार टेक प्रोडक्ट नहीं है। यह असली बदलाव लाने की कोशिश कर रहा है:</p>
+                    
+                    <ul>
+                        <li>एक छोटे शहर का डेंटिस्ट अब <strong>दिल्ली में एक के रूप में कुशलता से क्लिनिक चला सकता है</strong></li>
+                        <li>एक गाँव का मरीज <strong>अपॉइंटमेंट बुक कर सकता है, लागत समझ सकता है, और कम डर महसूस कर सकता है</strong> अंदर जाने से पहले</li>
+                        <li>कम लोगों को बुनियादी दांतों की देखभाल के लिए बड़े शहरों की यात्रा करने की आवश्यकता होगी</li>
+                        <li>अधिक लोग अपने दांतों की देखभाल करना शुरू करेंगे <strong>इससे पहले</strong> कि छोटी समस्याएं बड़ी, महंगी हो जाएं</li>
+                    </ul>
+                    
+                    <p class="quote">यह शहरों और छोटे कस्बों के बीच की खाई को पाटने के लिए प्रौद्योगिकी का उपयोग कर रहा है — एक बार में एक डेंटल क्लिनिक। 💪</p>
+
+                    <h3>Dactr को क्या अलग बनाता है?</h3>
+                    <ul>
+                        <li>✅ छोटे शहर के डेंटिस्ट के लिए किफायती</li>
+                        <li>✅ धीमी इंटरनेट के साथ ऑफलाइन काम करता है</li>
+                        <li>✅ हिंदी और अंग्रेजी में उपलब्ध</li>
+                        <li>✅ विशेष रूप  से डेंटल क्लिनिक के लिए डिज़ाइन किया गया</li>
+                        <li>✅ एक डेंटिस्ट द्वारा बनाया गया जो असली समस्याओं को समझता है</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+
+        // LocalStorage for data persistence (works offline!)
+        function saveToLocalStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (e) {
+                console.error('Storage error:', e);
+                return false;
+            }
+        }
+
+        function getFromLocalStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (e) {
+                console.error('Storage error:', e);
+                return null;
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            const enElements = document.querySelectorAll('.en');
+            const hiElements = document.querySelectorAll('.hi');
+            
+            if (currentLang === 'hi') {
+                enElements.forEach(el => el.classList.add('hidden'));
+                hiElements.forEach(el => el.classList.remove('hidden'));
+                document.getElementById('lang-btn-text').textContent = 'View in English';
+                document.getElementById('header-title').textContent = '🦷 डैक्टर';
+                document.getElementById('header-subtitle').textContent = 'भारत में सभी के लिए दंत चिकित्सा देखभाल को सुलभ बनाना';
+            } else {
+                hiElements.forEach(el => el.classList.add('hidden'));
+                enElements.forEach(el => el.classList.remove('hidden'));
+                document.getElementById('lang-btn-text').textContent = 'हिंदी में देखें';
+                document.getElementById('header-title').textContent = '🦷 Dactr';
+                document.getElementById('header-subtitle').textContent = 'Making Dental Care Accessible for Everyone in India';
+            }
+            
+            // Save language preference
+            saveToLocalStorage('dactr_language', currentLang);
+        }
+
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.closest('.nav-btn').classList.add('active');
+            
+            // Hide success message when switching pages
+            const successMsg = document.getElementById('bookingSuccess');
+            if (successMsg) successMsg.style.display = 'none';
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            
+            const booking = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                problem: document.getElementById('problem').value,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Get existing bookings
+            let bookings = getFromLocalStorage('dactr_bookings') || [];
+            
+            // Add new booking
+            bookings.push(booking);
+            
+            // Save to localStorage
+            if (saveToLocalStorage('dactr_bookings', bookings)) {
+                console.log('✅ Booking saved:', booking);
+                console.log('📊 Total bookings:', bookings.length);
+                
+                // Show success message
+                const successMsg = document.getElementById('bookingSuccess');
+                successMsg.style.display = 'block';
+                
+                // Reset form
+                document.getElementById('bookingForm').reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+            } else {
+                alert('Failed to save booking. Please try again.');
+            }
+        }
+
+        function calculateCost() {
+            const treatment = document.getElementById('treatment').value;
+            const costResult = document.getElementById('costResult');
+            const costAmount = document.getElementById('costAmount');
+            
+            if (treatment) {
+                costAmount.textContent = treatment;
+                costResult.style.display = 'block';
+            } else {
+                costResult.style.display = 'none';
+            }
+        }
+
+        // Initialize app on load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Set minimum date for appointment booking to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+            
+            // Restore language preference
+            const savedLang = getFromLocalStorage('dactr_language');
+            if (savedLang === 'hi') {
+                toggleLanguage();
+            }
+            
+            // Log stored bookings (for debugging)
+            const bookings = getFromLocalStorage('dactr_bookings') || [];
+            console.log('📅 Stored appointments:', bookings.length);
+            if (bookings.length > 0) {
+                console.log('Latest booking:', bookings[bookings.length - 1]);
+            }
+        });
+
+        // Service Worker for offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(
+                    registration => console.log('✅ Service Worker registered'),
+                    err => console.log('❌ Service Worker registration failed')
+                ).catch(err => console.log('Service Worker not available'));
+            });
+        }
+    </script>
+</body>
+</html>
