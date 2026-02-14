@@ -1,7 +1,7 @@
 // API Configuration
 const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000/api'
-    : 'https://your-backend-url.com/api'; // Replace with your deployed backend URL
+    : 'https://dactr-app.onrender.com/api';
 
 // API Helper Functions
 const api = {
